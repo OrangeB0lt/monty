@@ -1,6 +1,6 @@
 #include "monty.h"
 
-void push(stack_t **stack, unsigned int line_number)
+void push(stack_t **stack, unsigned int line_number __attribute__((unused)))
 {
 	stack_t *tmp;
 
@@ -8,6 +8,7 @@ void push(stack_t **stack, unsigned int line_number)
 	if (tmp == NULL)
 	{
 		fprintf(stderr, "Error: malloc failed");
+		fclose(globes.fm);
 		exit(EXIT_FAILURE);
 	}
 	tmp->n = globes.data;
@@ -22,21 +23,139 @@ void push(stack_t **stack, unsigned int line_number)
 }
 void pall(stack_t **stack, unsigned int line_number)
 {
-	(void) line_number;
-
 	stack_t *tmp = *stack;
+
+	(void) line_number;
 	while (tmp != NULL)
 	{
 		printf("%d\n", tmp->n);
 		tmp = tmp->next;
 	}
 }
-void swap(stack_t **stack, unsigned int line_number)
-{
-}
+/**
+ * add - add two nodes remove the top node and place sum in new
+ * @stack: dll stack
+ * @line_number: line num
+ *
+ * Return: void
+ */
 void add(stack_t **stack, unsigned int line_number)
 {
+	int a, b;
+
+	if (*stack == NULL || (*stack)->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
+		fclose(globes.fm);
+		exit(EXIT_FAILURE);
+	}
+	a = (*stack)->n;
+	b = (*stack)->next->n;
+	*stack = (*stack)->next;
+	free((*stack)->prev);
+	(*stack)->prev = NULL;
+	(*stack)->n = a + b;
 }
-void nop(stack_t **stack, unsigned int line_number)
+/**
+ * sub - sub two nodes remove the top node and place sum in new
+ * @stack: dll stack
+ * @line_number: line num
+ *
+ * Return: void
+ */
+void sub(stack_t **stack, unsigned int line_number)
 {
+	int a, b;
+
+	if (*stack == NULL || (*stack)->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't sub, stack too short\n", line_number);
+		fclose(globes.fm);
+		exit(EXIT_FAILURE);
+	}
+	a = (*stack)->n;
+	b = (*stack)->next->n;
+	*stack = (*stack)->next;
+	free((*stack)->prev);
+	(*stack)->prev = NULL;
+	(*stack)->n = b - a;
+}
+/**
+ * divide - div two nodes remove the top node and place sum in new
+ * @stack: dll stack
+ * @line_number: line num
+ *
+ * Return: void
+ */
+void divide(stack_t **stack, unsigned int line_number)
+{
+	int a, b;
+
+	if (*stack == NULL || (*stack)->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't div, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	a = (*stack)->n;
+	if (a == 0)
+	{
+		fprintf(stderr, "L%d: division by zero\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	b = (*stack)->next->n;
+	*stack = (*stack)->next;
+	free((*stack)->prev);
+	(*stack)->prev = NULL;
+	(*stack)->n = b / a;
+}
+/**
+ * mul - mul two nodes remove the top node and place sum in new
+ * @stack: dll stack
+ * @line_number: line num
+ *
+ * Return: void
+ */
+void mul(stack_t **stack, unsigned int line_number)
+{
+	int a, b;
+
+	if (*stack == NULL || (*stack)->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't mul, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	a = (*stack)->n;
+	b = (*stack)->next->n;
+	*stack = (*stack)->next;
+	free((*stack)->prev);
+	(*stack)->prev = NULL;
+	(*stack)->n = b * a;
+}
+/**
+ * mod - mod two nodes remove the top node and place sum in new
+ * @stack: dll stack
+ * @line_number: line num
+ *
+ * Return: void
+ */
+void mod(stack_t **stack, unsigned int line_number)
+{
+	int a, b;
+
+	if (*stack == NULL || (*stack)->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't mod, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	a = (*stack)->n;
+	if (a == 0)
+        {
+                fprintf(stderr, "L%d: division by zero\n", line_number);
+                exit(EXIT_FAILURE);
+        }
+	b = (*stack)->next->n;
+	*stack = (*stack)->next;
+	free((*stack)->prev);
+	(*stack)->prev = NULL;
+	(*stack)->n = b % a;
 }
