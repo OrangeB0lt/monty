@@ -90,7 +90,7 @@ int _iswhitespace(void)
 
 	for (i = 0; globes.lineptr[i] != '\0'; i++)
 		for (j = 0; ws[j] != '\0' && ws[j] != globes.lineptr[i]; j++)
-			if (ws[j] == '\0')
+			if (ws[j] == '\n')
 				return (0);
 	return (1);
 }
