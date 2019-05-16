@@ -1,5 +1,10 @@
 #include "monty.h"
-
+/**
+ * push - push a node onto the stack
+ * @stack: stack
+ * @line_number: line number in monty .m file
+ * Return: void
+ */
 void push(stack_t **stack, unsigned int line_number __attribute__((unused)))
 {
 	stack_t *tmp;
@@ -8,7 +13,7 @@ void push(stack_t **stack, unsigned int line_number __attribute__((unused)))
 	if (tmp == NULL)
 	{
 		fprintf(stderr, "Error: malloc failed");
-		fclose(globes.fm);
+		exit_free(*stack);
 		exit(EXIT_FAILURE);
 	}
 	tmp->n = globes.data;
@@ -21,6 +26,12 @@ void push(stack_t **stack, unsigned int line_number __attribute__((unused)))
 	}
 	*stack = tmp;
 }
+/**
+ * pall - print all data in stack
+ * @stack: stack
+ * @line_number: line number in monty .m file
+ * Return: void
+ */
 void pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *tmp = *stack;
@@ -33,17 +44,19 @@ void pall(stack_t **stack, unsigned int line_number)
 	}
 }
 /**
- *
- *
- *
- **/
+ * pint - print top int
+ * @stack: stack
+ * @line_number: line number in monty .m file
+ * Return: void
+ */
 void pint(stack_t **stack, unsigned int line_number)
 {
 	stack_t *tmp = *stack;
 
-	if(tmp == NULL)
+	if (tmp == NULL)
 	{
 		fprintf(stderr, "L%d: can't pint, stack empty", line_number);
+		exit_free(*stack);
 		exit(EXIT_FAILURE);
 	}
 	printf("%d\n", tmp->n);

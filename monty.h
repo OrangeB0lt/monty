@@ -23,9 +23,9 @@ int main(int argc, char *argv[]);
  */
 typedef struct stack_s
 {
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
 /**
  * struct instruction_s - opcode and its function
@@ -37,10 +37,11 @@ typedef struct stack_s
  */
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+void exit_free(stack_t *stack);
 void free_stack(stack_t *stack);
 void opcomp(stack_t **stack, unsigned int line_number, char *opcode);
 void push(stack_t **stack, unsigned int line_number);
@@ -64,12 +65,14 @@ void rotr(stack_t **stack, unsigned int line_number);
 /**
  * struct GlobalStruct - contains all globals
  * @data: int for push
- *
+ * @fm: file stream for monty file
+ * @lineptr: pointer to char sting allocated by getline function
  */
 struct GlobalStruct
 {
 	int data;
 	FILE *fm;
+	char *lineptr;
 } globes;
 
 #endif /* _MONTY */

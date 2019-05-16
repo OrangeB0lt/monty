@@ -1,12 +1,10 @@
 #include "monty.h"
 /**
- *
- *
- *
- *
- *
- **/
-
+ * pop - removes top item from stack
+ * @stack: stack
+ * @line_number: monty file line number
+ * Return: void
+ */
 void pop(stack_t **stack, unsigned int line_number)
 {
 	stack_t *tmp = *stack;
@@ -14,6 +12,7 @@ void pop(stack_t **stack, unsigned int line_number)
 	if (tmp == NULL)
 	{
 		fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
+		exit_free(*stack);
 		exit(EXIT_FAILURE);
 	}
 	if (tmp->next == NULL)
@@ -40,9 +39,10 @@ void nop(stack_t **stack, unsigned int line_number)
 	(void) line_number;
 }
 /**
- * swap - swap top two items on stack
- * 
- * Return:
+ * swap - swaps data from top two nodes in stack
+ * @stack: stack
+ * @line_number: monty file line number
+ * Return: void
  */
 void swap(stack_t **stack, unsigned int line_number)
 {
@@ -51,6 +51,7 @@ void swap(stack_t **stack, unsigned int line_number)
 	if (*stack == NULL || (*stack)->next == NULL)
 	{
 		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
+		exit_free(*stack);
 		exit(EXIT_FAILURE);
 	}
 	temp = (*stack)->n;
