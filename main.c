@@ -7,7 +7,7 @@
  */
 int main(int argc, char *argv[])
 {
-	char opcode[6], wrong[1024];
+	char opcode[6];
 	ssize_t read;
 	size_t len;
 	stack_t *stack = NULL;
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	while ((read = getline(&globes.lineptr, &len, globes.fm)) != -1)
 	{
 		line_number++;
-		matches = sscanf(globes.lineptr, "%s%d%1s", opcode, &globes.data, wrong);
+		matches = sscanf(globes.lineptr, "%s%d", opcode, &globes.data);
 		if (matches != 2 && strcmp(opcode, "push") == 0)
 		{
 			fprintf(stderr, "L%d: usage: push integer\n", line_number);
