@@ -49,5 +49,23 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 		}*/
+	free_stack(stack);
 	return (0);
+}
+
+/**
+ * free_stack - free a doubly linked list
+ * @stack: pointer to a ll
+ * Return: void
+ */
+void free_stack(stack_t *stack)
+{
+	stack_t *temp;
+
+	while (stack != NULL)
+	{
+		temp = stack->next;
+		free(stack);
+		stack = temp;
+	}
 }
