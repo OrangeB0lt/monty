@@ -1,60 +1,53 @@
 #include "monty.h"
 /**
  * main - main function for monty interpreter
- *
+ * @argc: arg count
+ * @argv: arg vector list
  * Return: 0 on success or EXIT_FAILURE
  */
 int main(int argc, char *argv[])
 {
-	char *lineptr = NULL, opcode[6], wrong[1024];
+	char opcode[6], wrong[1024];
 	ssize_t read;
 	size_t len;
 	stack_t *stack = NULL;
 	int matches;
 	unsigned int line_number = 0;
 
-	/* if too many or too few arguments to monty exit fail */
-	if (argc != 2)
+	if (argc != 2)	/* if too many or too few arguments to monty exit fail */
 	{
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 	globes.fm = fopen(argv[1], "r"); /* not freed must close file */
-	/* if file cant open then exit fail */
-	if (globes.fm == NULL)
+	if (globes.fm == NULL)	/* if file cant open then exit fail */
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		fclose(globes.fm);
 		exit(EXIT_FAILURE);
 	}
-	while ((read = getline(&lineptr, &len, globes.fm)) != -1)
+	globes.lineptr = NULL;
+	while ((read = getline(&globes.lineptr, &len, globes.fm)) != -1)
 	{
 		line_number++;
-		matches = sscanf(lineptr, "%s%d%1s", opcode, &globes.data, wrong);
+		matches = sscanf(globes.lineptr, "%s%d%1s", opcode, &globes.data, wrong);
 		if (matches != 2 && strcmp(opcode, "push") == 0)
 		{
 			fprintf(stderr, "L%d: usage: push integer\n", line_number);
-			fclose(globes.fm);
+			exit_free(stack);
 			exit(EXIT_FAILURE);
 		}
 		if (opcode != NULL && opcode[0] != '#')
 			opcomp(&stack, line_number, opcode);
-		free(lineptr);
-		lineptr = NULL;
+		free(globes.lineptr);
+		globes.lineptr = NULL;
 	}
-	fclose(globes.fm);
-	/* malloc failure */
-	/* if (errno == something)
-	{
-		fprintf(stderr, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
-		}*/
-	free_stack(stack);
+	exit_free(stack);
 	return (0);
 }
 
 /**
- * free_stack - free a doubly linked list
+ * free_stack - free a stack with single ptr reference
  * @stack: pointer to a ll
  * Return: void
  */
@@ -68,4 +61,16 @@ void free_stack(stack_t *stack)
 		free(stack);
 		stack = temp;
 	}
+}
+/**
+ * exit_free - frees all possible allocs before exiting the program
+ * @stack: ptr to a stack
+ * Return: void
+ */
+void exit_free(stack_t *stack)
+{
+	fclose(globes.fm);
+	if (globes.lineptr != NULL)
+		free(globes.lineptr);
+	free_stack(stack);
 }
