@@ -48,3 +48,4 @@ What you should learn from this project:
 
 ## Author
 * **Rory Fahy** - [rmf10003](https://github.com/rmf10003)
+* **Jared Ratner** - [OrangeB0lt](https://github.com/OrangeB0lt)
